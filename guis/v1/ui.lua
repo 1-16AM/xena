@@ -7,15 +7,6 @@ local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
 
-local DebugConfig = {
-    ForceMobile = false 
-}
-
-local Configuration = {
-    ForceMobile = false, 
-    DebugMode = false, 
-}
-
 local FADE_DURATION = 0.5
 local FADE_STYLE = Enum.EasingStyle.Sine
 local FADE_DIRECTION = Enum.EasingDirection.InOut
@@ -36,8 +27,7 @@ local originalHitboxColors = {}
 local originalHitboxTransparencies = {}
 local originalHitboxCanCollides = {}
 
--- Modified IS_MOBILE check to account for debug config
-local IS_MOBILE = Configuration.ForceMobile or game:GetService("UserInputService").TouchEnabled
+local IS_MOBILE = game:GetService("UserInputService").TouchEnabled
 local MOBILE_BUTTON_SIZE = UDim2.new(0, 70, 0, 70)  -- Made larger
 local MOBILE_BUTTON_POSITION = UDim2.new(0.9, -25, 0.8, -25)
 
@@ -104,18 +94,6 @@ local function enableDragging(frame, titleFrame)
             isDragging = false
         end
     end)
-end
-
-function UiLib:setConfig(config)
-    if type(config) == "table" then
-        for key, value in pairs(config) do
-            Configuration[key] = value
-        end
-    end
-end
-
-function UiLib:getConfig()
-    return table.clone(Configuration)
 end
 
 function UiLib:createMobileToggleButton()
@@ -891,17 +869,14 @@ end
 
 function UiLib:addSlider(config)
     local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0.95, 0, 0, 50) -- Increased height
+    frame.Size = UDim2.new(0.95, 0, 0, 40)
     frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
     frame.BorderSizePixel = 0
-    frame.ClipsDescendants = true -- Added clipping
 
-    local padding = Instance.new("UIPadding")
-    padding.PaddingTop = UDim.new(0, 5)
-    padding.PaddingBottom = UDim.new(0, 5)
-    padding.PaddingLeft = UDim.new(0, 10)
-    padding.PaddingRight = UDim.new(0, 10)
-    padding.Parent = frame
+    local frameStroke = Instance.new("UIStroke")
+    frameStroke.Color = Color3.fromRGB(50, 50, 50)
+    frameStroke.Thickness = 1
+    frameStroke.Parent = frame
 
     local min = config.Range[1] or 0
     local max = config.Range[2] or 100
@@ -939,9 +914,8 @@ function UiLib:addSlider(config)
 
     local sliderHitbox = Instance.new("TextButton")
     sliderHitbox.BackgroundTransparency = 1
-    sliderHitbox.Size = UDim2.new(1, 0, 0, 20) -- Made full width
-    sliderHitbox.Position = UDim2.new(0, 0, 0.5, 0)
-    sliderHitbox.AnchorPoint = Vector2.new(0, 0.5)
+    sliderHitbox.Size = UDim2.new(0.85, 0, 0, 30)
+    sliderHitbox.Position = UDim2.new(0.075, 0, 0.5, 0)
     sliderHitbox.Text = ""
     sliderHitbox.Parent = frame
 
@@ -953,12 +927,9 @@ function UiLib:addSlider(config)
     sliderBar.AnchorPoint = Vector2.new(0, 0.5)
     sliderBar.Parent = sliderHitbox
 
-    -- Add proper spacing between elements
-    local layoutGrid = Instance.new("UIGridLayout")
-    layoutGrid.CellSize = UDim2.new(1, -20, 0, 20)
-    layoutGrid.CellPadding = UDim2.new(0, 5, 0, 5)
-    layoutGrid.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    layoutGrid.Parent = frame
+    local barCorner = Instance.new("UICorner")
+    barCorner.CornerRadius = UDim.new(1, 0)
+    barCorner.Parent = sliderBar
 
     local sliderFill = Instance.new("Frame")
     sliderFill.BackgroundColor3 = Color3.fromRGB(47, 74, 131)
@@ -984,7 +955,7 @@ function UiLib:addSlider(config)
     local minLabel = Instance.new("TextBox")
     minLabel.Text = tostring(min)
     minLabel.Size = UDim2.new(0, 50, 0, 20)
-    minLabel.Position = UDim2.new(0, 0, 1, 2)
+    minLabel.Position = UDim2.new(0, 0, 1, -2)
     minLabel.BackgroundTransparency = 1
     minLabel.Font = Enum.Font.SourceSans
     minLabel.TextColor3 = Color3.fromRGB(225, 225, 225)
@@ -997,7 +968,7 @@ function UiLib:addSlider(config)
     local currentValueLabel = Instance.new("TextBox")
     currentValueLabel.Text = tostring(default)
     currentValueLabel.Size = UDim2.new(0, 50, 0, 20)
-    currentValueLabel.Position = UDim2.new(0.5, -25, 1, 2)
+    currentValueLabel.Position = UDim2.new(0.5, -25, 1, -2)
     currentValueLabel.BackgroundTransparency = 1
     currentValueLabel.Font = Enum.Font.SourceSansBold
     currentValueLabel.TextColor3 = Color3.fromRGB(225, 225, 225)
@@ -1010,7 +981,7 @@ function UiLib:addSlider(config)
     local maxLabel = Instance.new("TextBox")
     maxLabel.Text = tostring(max)
     maxLabel.Size = UDim2.new(0, 50, 0, 20)
-    maxLabel.Position = UDim2.new(1, -50, 1, 2)
+    maxLabel.Position = UDim2.new(1, -50, 1, -2)
     maxLabel.BackgroundTransparency = 1
     maxLabel.Font = Enum.Font.SourceSans
     maxLabel.TextColor3 = Color3.fromRGB(225, 225, 225)
@@ -1019,13 +990,6 @@ function UiLib:addSlider(config)
     maxLabel.Parent = sliderHitbox
     maxLabel.ClearTextOnFocus = false
     maxLabel.PlaceholderText = "Max"
-
-    -- Add bottom margin to ensure spacing when last in row
-    local marginFrame = Instance.new("Frame")
-    marginFrame.Size = UDim2.new(1, 0, 0, 5)
-    marginFrame.BackgroundTransparency = 1
-    marginFrame.LayoutOrder = 999
-    marginFrame.Parent = frame
 
     local function updateValue(value)
         value = math.clamp(value, min, max)
@@ -1132,7 +1096,7 @@ function UiLib:createSnowflake()
 
         local arm = Instance.new("Frame")
         arm.Size = UDim2.new(0.8, 0, 0.1, 0)
-        arm.Position = UDim2.new(0.1, 0, 0.45, 0)
+        arm.Position = UDim2.fromScale(0.1, 0.45)
         arm.BackgroundColor3 = Color3.new(1, 1, 1)
         arm.BackgroundTransparency = 0.2 
         arm.BorderSizePixel = 0
@@ -2023,7 +1987,7 @@ function UiLib:notify(text, notificationType)
     notification.BorderSizePixel = 0
     notification.ClipsDescendants = true
     notification.BackgroundTransparency = 1
-    notification.Position = UDim2.new(0, -NOTIFICATION_WIDTH + 20, 0, 0)
+    notification.Position = UDim2.new(0, -NOTIFICATION_WIDTH - 20, 0, 0)
     notification.Parent = self.notificationContainer
     local stroke = Instance.new("UIStroke")
     stroke.Color = Color3.fromRGB(45, 45, 45)
@@ -2101,7 +2065,7 @@ function UiLib:notify(text, notificationType)
         local exitTweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
 
         local exitPositionTween = TweenService:Create(notification, exitTweenInfo, {
-            Position = UDim2.new(0, -NOTIFICATION_WIDTH + 20, 0, 0)
+            Position = UDim2.new(0, -NOTIFICATION_WIDTH - 20, 0, 0)
         })
 
         local exitFadeTweens = {TweenService:Create(notification, exitTweenInfo, {
@@ -2357,5 +2321,3 @@ function UiLib:addColorPicker(config)
 end
 
 return UiLib
-
-
