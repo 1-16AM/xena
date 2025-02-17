@@ -11,11 +11,29 @@ local FADE_DURATION = 0.5
 local FADE_STYLE = Enum.EasingStyle.Sine
 local FADE_DIRECTION = Enum.EasingDirection.InOut
 
+local IS_MOBILE = game:GetService("UserInputService").TouchEnabled
+local MOBILE_BUTTON_SIZE = UDim2.new(0, 70, 0, 70)
+local MOBILE_BUTTON_POSITION = UDim2.new(0.9, -25, 0.8, -25)
+
 local BLUR_STRENGTH = 15
 local SNOWFLAKE_COUNT = 40
 local SNOWFLAKE_SPEED = 0.5
 local SNOWFLAKE_SIZE_MIN = 8
 local SNOWFLAKE_SIZE_MAX = 16
+
+if not IS_MOBILE then
+ BLUR_STRENGTH = 15
+ SNOWFLAKE_COUNT = 40
+ SNOWFLAKE_SPEED = 0.5
+ SNOWFLAKE_SIZE_MIN = 8
+ SNOWFLAKE_SIZE_MAX = 16
+else
+     BLUR_STRENGTH = 0.01
+ SNOWFLAKE_COUNT = 0.01
+ SNOWFLAKE_SPEED = 0.01
+ SNOWFLAKE_SIZE_MIN = 0.01
+ SNOWFLAKE_SIZE_MAX = 0.01
+end
 
 local NOTIFICATION_DURATION = 3
 local NOTIFICATION_PADDING = 10
@@ -26,10 +44,6 @@ local originalHitboxSizes = {}
 local originalHitboxColors = {}
 local originalHitboxTransparencies = {}
 local originalHitboxCanCollides = {}
-
-local IS_MOBILE = game:GetService("UserInputService").TouchEnabled
-local MOBILE_BUTTON_SIZE = UDim2.new(0, 70, 0, 70)  -- Made larger
-local MOBILE_BUTTON_POSITION = UDim2.new(0.9, -25, 0.8, -25)
 
 local MOBILE_TOP_BAR_HEIGHT = 45
 local MOBILE_TOP_BAR_PADDING = 10
