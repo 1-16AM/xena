@@ -5,7 +5,7 @@
 ## Usage
 
 ```luau
-loadstring(game:HttpGet("https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/main.lua"))()
 ```
 
 ## Developers & Credits
