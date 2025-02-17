@@ -40,11 +40,6 @@ local NOTIFICATION_PADDING = 10
 local NOTIFICATION_WIDTH = 250
 local NOTIFICATION_HEIGHT = 40
 
-local originalHitboxSizes = {}
-local originalHitboxColors = {}
-local originalHitboxTransparencies = {}
-local originalHitboxCanCollides = {}
-
 local MOBILE_TOP_BAR_HEIGHT = 45
 local MOBILE_TOP_BAR_PADDING = 10
 
