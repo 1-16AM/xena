@@ -11,6 +11,7 @@ local function loadGame()
 
     local success, error = pcall(function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/games/'.. game.GameId ..'.lua'))()
+        print(game.GameId)
     end)
 
     if not success then
