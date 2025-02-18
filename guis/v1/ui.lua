@@ -515,19 +515,20 @@ function UiLib.new(config)
 
     return self
 end
-
 function UiLib:addLabel(text, id)
     local frame = Instance.new("Frame")
     frame.BackgroundTransparency = 1
     frame.Size = UDim2.new(0.95, 0, 0, 37)
 
-    local label = Instance.new("TextLabel")
+    local label = Instance.new("TextLabel") 
     label.Text = text
     label.BackgroundTransparency = 1
     label.Size = UDim2.new(1, 0, 1, 0)
     label.Font = Enum.Font.RobotoMono
     label.TextColor3 = Color3.fromRGB(225, 225, 225)
     label.TextSize = 15
+    label.TextWrapped = true
+    label.TextXAlignment = Enum.TextXAlignment.Left
     label.Parent = frame
 
     if self.activeTab and self.tabs[self.activeTab] then
