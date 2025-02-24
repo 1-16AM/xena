@@ -1,21 +1,44 @@
-local supportedGames = {
-    [2955322961] = true, -- shrimp game
-    [6942875911] = true, -- squid project
-}
+local function fetchGames()
+    local success, response = pcall(function()
+        return game:GetService('HttpService'):JSONDecode(
+            game:HttpGet('https://api.github.com/repos/1-16AM/xena/contents/games')
+        )
+    end)
+
+    if not success then
+        warn("Failed to fetch game scripts:", response)
+        return {}
+    end
+
+    local scripts = {}
+    for _, file in ipairs(response) do
+        if file.type == "file" then
+            local gameId = tonumber(file.name:match("(%d+)%.lua"))
+            if gameId then
+                scripts[gameId] = file.download_url
+            end
+        end
+    end
+    
+    return scripts
+end
 
 local function loadGame()
-    if not supportedGames[game.GameId] then
+    local gameScripts = fetchGames()
+    local scriptUrl = gameScripts[game.GameId]
+    
+    if not scriptUrl then
         warn("xena does not support this game yet (universal coming soon)")
         return
     end
 
     local success, error = pcall(function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/games/'.. game.GameId ..'.lua'))()
-        print(game.GameId)
+        loadstring(game:HttpGet(scriptUrl))()
+        print("Loaded script for game:", game.GameId)
     end)
 
     if not success then
-        warn("failed to load script:", error)
+        warn("Failed to load script:", error)
     end
 end
 
