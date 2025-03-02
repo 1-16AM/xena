@@ -97,6 +97,13 @@ end
 
 local TargetInfo = {}
 
+-- Add a call handler for the module
+setmetatable(TargetInfo, {
+    __call = function()
+        return TargetInfo
+    end
+})
+
 function TargetInfo.SetTarget(player)
     if not player or not player:IsA("Player") then return end
     currentTarget = player
@@ -162,4 +169,6 @@ HealthBarBG.ZIndex = 2
 NameLabel.ZIndex = 2
 LevelLabel.ZIndex = 2
 
-return TargetInfo
+return function()
+    return TargetInfo
+end
