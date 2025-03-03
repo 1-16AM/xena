@@ -1,4 +1,4 @@
-# GameSneezeUI Documentation
+# GameSneezeUI Documentation - docs made by claude
 
 A lightweight and feature-rich UI library for Roblox exploiting.
 
@@ -22,7 +22,7 @@ A lightweight and feature-rich UI library for Roblox exploiting.
 ## Getting Started
 
 ```lua
-local library = loadstring(game:HttpGet("path/to/gamesneezeui.lua"))()
+local library = loadstring(game:HttpGet("[path/to/gamesneezeui.lua](https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/guis/gamesneeze/ui.lua)"))()
 
 -- Initialize theme
 local theme = {
