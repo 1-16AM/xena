@@ -273,22 +273,22 @@ function targetInfo:Set(player)
         local _, isOnScreen = camera:WorldToViewportPoint(root.Position)
         local distance = (camera.CFrame.Position - root.Position).Magnitude
         
-        local minScale = 0.85
-        local maxScale = 1.5
-        local scaleStartDist = 30
-        local targetScale = math.clamp(scaleStartDist / math.max(distance, 5), minScale, maxScale)
+        local minScale = 0.45
+        local maxScale = 0.8
+        local scaleStartDist = 15
+        local targetScale = math.clamp(scaleStartDist / math.max(distance, 3), minScale, maxScale)
         
         if not isOnScreen then 
             targetScale = targetScale * 0.8 
         end
         
-        lastScale = lastScale + (targetScale - lastScale) * 0.15
+        lastScale = lastScale + (targetScale - lastScale) * 0.2
         
         Remakefromidk.Size = UDim2.new(0, baseSize.X * lastScale, 0, baseSize.Y * lastScale)
         
-        local baseTextSize = 16
+        local baseTextSize = 12
         local scaledTextSize = math.floor(baseTextSize * lastScale)
-        local textSize = math.clamp(scaledTextSize, 14, 24)
+        local textSize = math.clamp(scaledTextSize, 10, 16)
         
         TextLabel.TextSize = textSize
         _1Text.TextSize = textSize
@@ -355,5 +355,4 @@ end
 function targetInfo:Visible(state)
     Remakefromidk.Enabled = state
 end
-targetInfo:Set(game.Players.LocalPlayer)
 return targetInfo
