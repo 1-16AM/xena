@@ -232,7 +232,6 @@ function targetInfo:Set(player)
         return
     end
     
-    -- Make sure we have a valid player
     if not player:IsA("Player") then
         local possiblePlayer = Players:GetPlayerFromCharacter(player)
         if not possiblePlayer then
@@ -241,7 +240,6 @@ function targetInfo:Set(player)
         player = possiblePlayer
     end
     
-    -- Wait for character if needed
     local character = player.Character
     if not character or not character:IsA("Model") then
         return
@@ -263,7 +261,7 @@ function targetInfo:Set(player)
     _1Display.Text = "..."
     _2Name.Text = "..."
 
-    updateConnection = RunService.RenderStepped:Connect(function()
+    updateConnection = RunService.Heartbeat:Connect(function()
         if not player or not player.Character then return end
         
         local humanoid = player.Character:FindFirstChild("Humanoid")
@@ -326,33 +324,19 @@ function targetInfo:Set(player)
     )
     
     local lastHealth = 1
-    updateConnection = RunService.Heartbeat:Connect(function()
-        if not player or not player.Character or not player.Character:FindFirstChild("Humanoid") then
-            if Frame_5.Size.X.Scale ~= 0 then
-                local tween = TweenService:Create(Frame_5, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
-                    Size = UDim2.new(0, 0, 0, 14)
-                })
-                tween:Play()
-            end
-            lastHealth = 0
-            return
-        end
-        
-        local health = player.Character.Humanoid.Health
-        local maxHealth = player.Character.Humanoid.MaxHealth
-        local healthPercent = (health / maxHealth)
-        
-        if healthPercent ~= lastHealth then
-            local tween = TweenService:Create(Frame_5, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
-                Size = UDim2.new(healthPercent, 0, 0, 14)
-            })
-            tween:Play()
-            lastHealth = healthPercent
-        end
-    end)
 end
 
 function targetInfo:Visible(state)
-    Remakefromidk.Enabled = state
+    if not state then
+        if updateConnection then
+            updateConnection:Disconnect()
+            updateConnection = nil
+        end
+        Remakefromidk.Enabled = false
+        Remakefromidk.Parent = nil
+    else
+        Remakefromidk.Enabled = true
+    end
 end
+
 return targetInfo
