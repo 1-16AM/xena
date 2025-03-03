@@ -22,7 +22,7 @@ A lightweight and feature-rich UI library for Roblox exploiting.
 ## Getting Started
 
 ```lua
-local library = loadstring(game:HttpGet("[path/to/gamesneezeui.lua](https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/guis/gamesneeze/ui.lua)"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/guis/gamesneeze/ui.lua"))()
 
 -- Initialize theme
 local theme = {
@@ -227,69 +227,6 @@ mainSection:List({
     pointer = "myList",
     callback = function(selected)
         print("Selected item:", selected)
-    end
-})
-```
-
-## Complete Example
-
-```lua
-local library, utility, pointers, theme = loadstring(game:HttpGet("path/to/gamesneezeui.lua"))()
-
--- Create window
-local window = library:New({
-    name = "GameSneezeUI Example",
-    size = Vector2.new(600, 400),
-    theme = theme
-})
-
--- Create page
-local mainPage = window:Page({
-    name = "Main",
-    size = 100
-})
-
--- Create sections
-local leftSection = mainPage:Section({
-    name = "Left Section",
-    side = "left"
-})
-
-local rightSection = mainPage:Section({
-    name = "Right Section",
-    side = "right"
-})
-
--- Add elements
-leftSection:Label({
-    name = "Welcome to GameSneezeUI!"
-})
-
-leftSection:Toggle({
-    name = "Toggle Feature",
-    def = false,
-    pointer = "featureEnabled",
-    callback = function(state)
-        print("Feature enabled:", state)
-    end
-})
-
-rightSection:Slider({
-    name = "Adjust Speed",
-    min = 0,
-    max = 100,
-    def = 50,
-    decimals = 1,
-    pointer = "speedValue",
-    callback = function(value)
-        print("Speed set to:", value)
-    end
-})
-
-rightSection:Button({
-    name = "Execute",
-    callback = function()
-        print("Executing...")
     end
 })
 ```
