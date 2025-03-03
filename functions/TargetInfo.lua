@@ -232,12 +232,25 @@ function targetInfo:Set(player)
         return
     end
     
-    if not player.Character then
-        player.CharacterAdded:Wait()
+    -- Make sure we have a valid player
+    if not player:IsA("Player") then
+        local possiblePlayer = Players:GetPlayerFromCharacter(player)
+        if not possiblePlayer then
+            return
+        end
+        player = possiblePlayer
     end
     
+    -- Wait for character if needed
     local character = player.Character
-    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    if not character or not character:IsA("Model") then
+        return
+    end
+    
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then
+        return
+    end
     
     Remakefromidk.Enabled = true
     Remakefromidk.Adornee = humanoidRootPart
@@ -260,16 +273,22 @@ function targetInfo:Set(player)
         local _, isOnScreen = camera:WorldToViewportPoint(root.Position)
         local distance = (camera.CFrame.Position - root.Position).Magnitude
         
-        local targetScale = math.clamp(30 / distance, 0.5, 1.5)
-        if not isOnScreen then targetScale = targetScale * 0.8 end
+        local minScale = 0.85
+        local maxScale = 1.5
+        local scaleStartDist = 30
+        local targetScale = math.clamp(scaleStartDist / math.max(distance, 5), minScale, maxScale)
         
-        lastScale = lastScale + (targetScale - lastScale) * 0.1
+        if not isOnScreen then 
+            targetScale = targetScale * 0.8 
+        end
+        
+        lastScale = lastScale + (targetScale - lastScale) * 0.15
         
         Remakefromidk.Size = UDim2.new(0, baseSize.X * lastScale, 0, baseSize.Y * lastScale)
         
         local baseTextSize = 16
         local scaledTextSize = math.floor(baseTextSize * lastScale)
-        local textSize = math.clamp(scaledTextSize, 12, 24)
+        local textSize = math.clamp(scaledTextSize, 14, 24)
         
         TextLabel.TextSize = textSize
         _1Text.TextSize = textSize
@@ -336,5 +355,5 @@ end
 function targetInfo:Visible(state)
     Remakefromidk.Enabled = state
 end
-
+targetInfo:Set(game.Players.LocalPlayer)
 return targetInfo
