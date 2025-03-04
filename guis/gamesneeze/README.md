@@ -1,246 +1,231 @@
-# GameSneezeUI Documentation - docs made by claude
-
-A lightweight and feature-rich UI library for Roblox exploiting.
+# UI Library Documentation
 
 ## Table of Contents
-- [Getting Started](#getting-started)
-- [Window](#window)
-- [Pages](#pages)
-- [Sections](#sections)
-- [Elements](#elements)
-  - [Label](#label)
-  - [Toggle](#toggle)
-  - [Slider](#slider)
-  - [Button](#button)
-  - [TextBox](#textbox)
-  - [Dropdown](#dropdown)
-  - [MultiDropdown](#multidropdown)
-  - [Keybind](#keybind)
-  - [Colorpicker](#colorpicker)
-  - [List](#list)
+1. [Getting Started](#getting-started)
+2. [Window](#window)
+3. [Pages](#pages)
+4. [Sections](#sections)
+5. [Elements](#elements)
+6. [Utilities](#utilities)
 
 ## Getting Started
 
+### Loading the Library
 ```lua
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/guis/gamesneeze/ui.lua"))()
+local library = loadstring(game:HttpGet("path/to/library.lua"))()
+```
 
--- Initialize theme
-local theme = {
-    accent = Color3.fromRGB(50, 100, 255),
-    lightcontrast = Color3.fromRGB(30, 30, 30),
-    darkcontrast = Color3.fromRGB(20, 20, 20),
-    outline = Color3.fromRGB(0, 0, 0),
-    inline = Color3.fromRGB(50, 50, 50),
-    textcolor = Color3.fromRGB(255, 255, 255),
-    textdark = Color3.fromRGB(175, 175, 175),
-    textborder = Color3.fromRGB(0, 0, 0),
-    font = Drawing.Fonts.Plex,
-    textsize = 13
-}
+### Basic Usage
+```lua
+local window = library:New({
+    name = "Window Title",
+    size = Vector2.new(504, 604),
+    accent = Color3.fromRGB(55, 175, 225)
+})
+
+local page = window:Page({
+    name = "Page Name"
+})
+
+local section = page:Section({
+    name = "Section Name"
+})
 ```
 
 ## Window
+The main container for your UI.
 
-Create a new window:
+### Properties
+- name (string) - Window title
+- size (Vector2) - Window size
+- accent (Color3) - Accent color
+- callback (function) - Called when window state changes
 
-```lua
-local window = library:New({
-    name = "GameSneezeUI",
-    size = Vector2.new(600, 400),
-    theme = theme
-})
-```
+### Methods
+- window:Fade() - Toggle window visibility
+- window:Initialize() - Initialize the window
+- window:Watermark(info) - Add watermark
+- window:KeybindsList(info) - Add keybinds list
+- window:StatusList(info) - Add status list
+- window:Unload() - Remove the UI
 
 ## Pages
+Containers for sections, accessed via tabs.
 
-Add pages to your window:
+### Properties
+- name (string) - Page name
+- size (number) - Page size
 
-```lua 
-local mainPage = window:Page({
-    name = "Main",
-    size = 100
-})
-```
+### Methods
+- page:Section(info) - Create a new section
+- page:MultiSection(info) - Create multiple sections
+- page:PlayerList(info) - Create player list
 
 ## Sections
+Containers for UI elements.
 
-Create sections within pages:
+### Properties
+- name (string) - Section name
+- size (number) - Section size
+- side ("left"/"right") - Section position
 
-```lua
-local mainSection = mainPage:Section({
-    name = "Main Section",
-    side = "left"
-})
-```
+### Methods
+All element creation methods below.
 
 ## Elements
 
 ### Label
-
 ```lua
-mainSection:Label({
-    name = "This is a label"
-})
-```
-
-### Toggle
-
-```lua
-local myToggle = mainSection:Toggle({
-    name = "Toggle Example",
-    def = false,
-    pointer = "myToggle",
-    callback = function(state)
-        print("Toggle state:", state)
-    end
-})
-
--- Add colorpicker to toggle
-myToggle:Colorpicker({
-    name = "Toggle Color",
-    def = Color3.fromRGB(255, 0, 0),
-    transparency = 0,
-    pointer = "toggleColor",
-    callback = function(color, transparency)
-        print("Color selected:", color, transparency)
-    end
-})
-
--- Add keybind to toggle
-myToggle:Keybind({
-    name = "Toggle Bind",
-    def = Enum.KeyCode.E,
-    mode = "Toggle", -- "Toggle", "Hold", "Always"
-    pointer = "toggleBind",
-    callback = function(key)
-        print("Key pressed:", key)
-    end
-})
-```
-
-### Slider
-
-```lua
-mainSection:Slider({
-    name = "Slider Example",
-    min = 0,
-    max = 100,
-    def = 50,
-    decimals = 1,
-    pointer = "mySlider",
-    callback = function(value)
-        print("Slider value:", value)
-    end
+section:Label({
+    name = "Label Text",
+    middle = false, -- Center text
+    pointer = "label_pointer"
 })
 ```
 
 ### Button
-
 ```lua
-mainSection:Button({
-    name = "Click Me!",
-    pointer = "myButton",
-    callback = function()
-        print("Button clicked!")
-    end
+section:Button({
+    name = "Button Name",
+    callback = function() end,
+    pointer = "button_pointer"
 })
 ```
 
-### TextBox
-
+### Toggle
 ```lua
-mainSection:TextBox({
-    name = "Enter Text",
-    def = "Default text",
-    placeholder = "Type here...",
-    pointer = "myTextbox",
-    callback = function(text)
-        print("Text entered:", text)
-    end
+section:Toggle({
+    name = "Toggle Name",
+    def = false, -- Default state
+    pointer = "toggle_pointer",
+    callback = function(state) end
+})
+```
+
+### Slider
+```lua
+section:Slider({
+    name = "Slider Name",
+    def = 50, -- Default value
+    min = 0,
+    max = 100,
+    decimals = 1,
+    suffix = "%", -- Value suffix
+    pointer = "slider_pointer",
+    callback = function(value) end
 })
 ```
 
 ### Dropdown
-
 ```lua
-mainSection:Dropdown({
-    name = "Select Option",
+section:Dropdown({
+    name = "Dropdown Name",
     def = "Option 1",
     options = {"Option 1", "Option 2", "Option 3"},
-    pointer = "myDropdown",
-    callback = function(option)
-        print("Selected:", option)
-    end
+    max = 8, -- Max visible items
+    pointer = "dropdown_pointer",
+    callback = function(option) end
 })
 ```
 
-### MultiDropdown
-
+### Multibox
 ```lua
-mainSection:Multibox({
-    name = "Multi Select",
+section:Multibox({
+    name = "Multibox Name",
     def = {"Option 1"},
     options = {"Option 1", "Option 2", "Option 3"},
-    pointer = "myMultibox",
-    callback = function(options)
-        print("Selected options:", table.concat(options, ", "))
-    end
-})
-```
-
-### Keybind
-
-```lua
-mainSection:Keybind({
-    name = "Press Key",
-    def = Enum.KeyCode.RightShift,
-    pointer = "myKeybind",
-    mode = "Toggle",
-    callback = function(key)
-        print("Keybind pressed:", key)
-    end
+    min = 0, -- Minimum selections
+    pointer = "multibox_pointer",
+    callback = function(options) end
 })
 ```
 
 ### Colorpicker
-
 ```lua
-mainSection:Colorpicker({
-    name = "Pick Color",
+section:Colorpicker({
+    name = "Colorpicker Name",
     def = Color3.fromRGB(255, 0, 0),
-    transparency = 0,
-    pointer = "myColorpicker",
-    callback = function(color, transparency)
-        print("Color picked:", color, transparency)
-    end
+    transparency = 0, -- Optional transparency
+    pointer = "colorpicker_pointer",
+    callback = function(color) end
+})
+```
+
+### Keybind
+```lua
+section:Keybind({
+    name = "Keybind Name",
+    def = Enum.KeyCode.G,
+    mode = "Toggle", -- "Toggle", "Hold", "Always"
+    pointer = "keybind_pointer",
+    callback = function(key) end
+})
+```
+
+### Textbox
+```lua
+section:TextBox({
+    name = "Textbox Name",
+    def = "Default Text",
+    placeholder = "Enter text...",
+    max = 50, -- Character limit
+    pointer = "textbox_pointer",
+    callback = function(text) end
 })
 ```
 
 ### List
-
 ```lua
-mainSection:List({
-    name = "List Example",
-    max = 8,
-    options = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"},
-    def = 1,
-    pointer = "myList",
-    callback = function(selected)
-        print("Selected item:", selected)
-    end
+section:List({
+    options = {"Item 1", "Item 2", "Item 3"},
+    max = 8, -- Max visible items
+    current = 1, -- Default selected index
+    pointer = "list_pointer",
+    callback = function(item) end
 })
 ```
 
-## Accessing Values
+## Utilities
 
-You can access element values using pointers:
-
+### Pointers
+Access elements using pointers:
 ```lua
--- Get values
-local toggleState = pointers.featureEnabled:Get()
-local sliderValue = pointers.speedValue:Get()
-
--- Set values
-pointers.featureEnabled:Set(true)
-pointers.speedValue:Set(75)
+library.pointers["pointer_name"]:Set(value)
+library.pointers["pointer_name"]:Get()
 ```
+
+### Themes
+Available theme colors:
+- accent
+- lightcontrast
+- darkcontrast
+- outline
+- inline
+- textcolor
+- textdark
+- textborder
+- cursoroutline
+
+### Window Features
+- Draggable
+- Minimizable
+- Customizable keybind
+- Auto-saves configuration
+- Smooth animations
+
+### Additional Features
+- Watermark support
+- Keybinds list
+- Status indicators
+- Player list
+- Multi-page support
+- Responsive layout
+- Custom cursor
+
+### Event Connections
+The library supports these events:
+- began
+- ended
+- changed
+
+These can be used to create custom behaviors and interactions with UI elements.
