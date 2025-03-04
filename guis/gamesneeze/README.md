@@ -1,176 +1,293 @@
-# UI Library Documentation
+# Complete UI Library Documentation
 
 ## Table of Contents
 1. [Getting Started](#getting-started)
-2. [Window](#window)
-3. [Pages](#pages)
-4. [Sections](#sections)
-5. [Elements](#elements)
-6. [Utilities](#utilities)
+2. [Window Creation](#window-creation)
+3. [Pages & Sections](#pages--sections)
+4. [UI Elements](#ui-elements)
+5. [Advanced Features](#advanced-features)
+6. [Themes & Customization](#themes--customization)
+7. [Examples](#examples)
 
 ## Getting Started
 
-### Loading the Library
+### Installation
 ```lua
 local library = loadstring(game:HttpGet("path/to/library.lua"))()
 ```
 
-### Basic Usage
+### Basic Structure
 ```lua
+-- Create window
 local window = library:New({
-    name = "Window Title",
+    name = "Example Window",
     size = Vector2.new(504, 604),
     accent = Color3.fromRGB(55, 175, 225)
 })
 
+-- Create page
 local page = window:Page({
-    name = "Page Name"
+    name = "Main Page"
 })
 
+-- Create section
 local section = page:Section({
-    name = "Section Name"
+    name = "Settings"
+})
+
+-- Initialize the UI
+window:Initialize()
+```
+
+## Window Creation
+
+### Standard Window
+```lua
+local window = library:New({
+    name = "Window Title",
+    size = Vector2.new(504, 604),
+    accent = Color3.fromRGB(55, 175, 225),
+    callback = function(currentPage) 
+        print("Page changed to:", currentPage.name)
+    end
 })
 ```
 
-## Window
-The main container for your UI.
+### Loader Window
+```lua
+local loader = library:Loader({
+    name = "Loading...",
+    size = Vector2.new(300, 200),
+    accent = Color3.fromRGB(55, 175, 225),
+    callback = function() 
+        print("Loader complete")
+    end,
+    pages = 3 -- Number of pages to create
+})
+```
 
-### Properties
-- name (string) - Window title
-- size (Vector2) - Window size
-- accent (Color3) - Accent color
-- callback (function) - Called when window state changes
+### Window Methods
+```lua
+-- Toggle visibility
+window:Fade()
 
-### Methods
-- window:Fade() - Toggle window visibility
-- window:Initialize() - Initialize the window
-- window:Watermark(info) - Add watermark
-- window:KeybindsList(info) - Add keybinds list
-- window:StatusList(info) - Add status list
-- window:Unload() - Remove the UI
+-- Add watermark
+window:Watermark({
+    name = "Username | FPS: %fps% | Ping: %ping%"
+})
 
-## Pages
-Containers for sections, accessed via tabs.
+-- Add keybinds list
+window:KeybindsList({
+    title = "Active Keybinds"
+})
 
-### Properties
-- name (string) - Page name
-- size (number) - Page size
+-- Add status list
+window:StatusList({
+    title = "Status"
+})
 
-### Methods
-- page:Section(info) - Create a new section
-- page:MultiSection(info) - Create multiple sections
-- page:PlayerList(info) - Create player list
+-- Unload UI
+window:Unload()
+```
 
-## Sections
-Containers for UI elements.
+## Pages & Sections
 
-### Properties
-- name (string) - Section name
-- size (number) - Section size
-- side ("left"/"right") - Section position
+### Page Creation
+```lua
+local page = window:Page({
+    name = "Page Name",
+    size = 100 -- Optional custom size
+})
+```
 
-### Methods
-All element creation methods below.
+### Section Types
 
-## Elements
+#### Standard Section
+```lua
+local section = page:Section({
+    name = "Section Name",
+    size = 200,
+    side = "left" -- or "right"
+})
+```
+
+#### Multi Section
+```lua
+local section1, section2 = page:MultiSection({
+    sections = {"Section 1", "Section 2"},
+    size = 200,
+    side = "left",
+    callback = function(sectionName) end
+})
+```
+
+#### Player List Section
+```lua
+local playerList = page:PlayerList({
+    size = 200,
+    callback = function(player, selected) end
+})
+```
+
+## UI Elements
 
 ### Label
 ```lua
 section:Label({
-    name = "Label Text",
-    middle = false, -- Center text
-    pointer = "label_pointer"
+    name = "Information Text",
+    middle = true, -- Center alignment
+    pointer = "info_label"
 })
 ```
 
 ### Button
 ```lua
 section:Button({
-    name = "Button Name",
-    callback = function() end,
-    pointer = "button_pointer"
+    name = "Click Me",
+    callback = function()
+        print("Button clicked!")
+    end,
+    pointer = "main_button"
+})
+
+-- Button holder (multiple buttons)
+section:ButtonHolder({
+    buttons = {
+        {name = "Button 1", callback = function() end},
+        {name = "Button 2", callback = function() end}
+    }
 })
 ```
 
 ### Toggle
 ```lua
-section:Toggle({
-    name = "Toggle Name",
-    def = false, -- Default state
-    pointer = "toggle_pointer",
-    callback = function(state) end
+local toggle = section:Toggle({
+    name = "Toggle Feature",
+    def = false,
+    pointer = "feature_toggle",
+    callback = function(state)
+        print("Toggle state:", state)
+    end
+})
+
+-- Toggle with colorpicker
+local colorpicker = toggle:Colorpicker({
+    name = "Toggle Color",
+    def = Color3.fromRGB(255, 0, 0),
+    transparency = 0,
+    pointer = "toggle_color",
+    callback = function(color, alpha)
+        print("Color selected:", color, "Alpha:", alpha)
+    end
+})
+
+-- Toggle with keybind
+local keybind = toggle:Keybind({
+    name = "Toggle Bind",
+    def = Enum.KeyCode.R,
+    mode = "Toggle", -- "Toggle", "Hold", "Always"
+    pointer = "toggle_key",
+    callback = function(key)
+        print("Key pressed:", key)
+    end
 })
 ```
 
 ### Slider
 ```lua
 section:Slider({
-    name = "Slider Name",
-    def = 50, -- Default value
+    name = "Adjustment",
+    def = 50,
     min = 0,
     max = 100,
     decimals = 1,
-    suffix = "%", -- Value suffix
-    pointer = "slider_pointer",
-    callback = function(value) end
+    suffix = "%",
+    pointer = "adjustment_value",
+    callback = function(value)
+        print("Slider value:", value)
+    end
 })
 ```
 
 ### Dropdown
 ```lua
 section:Dropdown({
-    name = "Dropdown Name",
+    name = "Selection",
     def = "Option 1",
     options = {"Option 1", "Option 2", "Option 3"},
-    max = 8, -- Max visible items
-    pointer = "dropdown_pointer",
-    callback = function(option) end
+    max = 8,
+    pointer = "dropdown_selection",
+    callback = function(option)
+        print("Selected:", option)
+    end
 })
 ```
 
 ### Multibox
 ```lua
 section:Multibox({
-    name = "Multibox Name",
+    name = "Multiple Select",
     def = {"Option 1"},
     options = {"Option 1", "Option 2", "Option 3"},
-    min = 0, -- Minimum selections
-    pointer = "multibox_pointer",
-    callback = function(options) end
+    min = 0,
+    pointer = "multi_selection",
+    callback = function(selections)
+        for _, selection in pairs(selections) do
+            print("Selected:", selection)
+        end
+    end
 })
 ```
 
 ### Colorpicker
 ```lua
 section:Colorpicker({
-    name = "Colorpicker Name",
+    name = "Color Selection",
     def = Color3.fromRGB(255, 0, 0),
-    transparency = 0, -- Optional transparency
-    pointer = "colorpicker_pointer",
-    callback = function(color) end
+    transparency = 0,
+    pointer = "color_picker",
+    callback = function(color, alpha)
+        print("Color:", color, "Alpha:", alpha)
+    end
+})
+
+-- Double colorpicker
+local colorpicker = section:Colorpicker(...)
+colorpicker:Colorpicker({
+    name = "Secondary Color",
+    def = Color3.fromRGB(0, 255, 0),
+    transparency = 0,
+    pointer = "secondary_color",
+    callback = function(color, alpha)
+        print("Secondary color:", color, "Alpha:", alpha)
+    end
 })
 ```
 
 ### Keybind
 ```lua
 section:Keybind({
-    name = "Keybind Name",
-    def = Enum.KeyCode.G,
-    mode = "Toggle", -- "Toggle", "Hold", "Always"
-    pointer = "keybind_pointer",
-    callback = function(key) end
+    name = "Action Key",
+    def = Enum.KeyCode.E,
+    mode = "Toggle",
+    pointer = "action_key",
+    callback = function(key, active)
+        print("Key:", key, "Active:", active)
+    end
 })
 ```
 
 ### Textbox
 ```lua
 section:TextBox({
-    name = "Textbox Name",
-    def = "Default Text",
+    name = "Input",
+    def = "Default",
     placeholder = "Enter text...",
-    max = 50, -- Character limit
-    pointer = "textbox_pointer",
-    callback = function(text) end
+    max = 50,
+    pointer = "text_input",
+    callback = function(text)
+        print("Input:", text)
+    end
 })
 ```
 
@@ -178,54 +295,128 @@ section:TextBox({
 ```lua
 section:List({
     options = {"Item 1", "Item 2", "Item 3"},
-    max = 8, -- Max visible items
-    current = 1, -- Default selected index
-    pointer = "list_pointer",
-    callback = function(item) end
+    max = 8,
+    current = 1,
+    pointer = "item_list",
+    callback = function(item)
+        print("Selected item:", item)
+    end
 })
 ```
 
-## Utilities
+## Advanced Features
 
-### Pointers
-Access elements using pointers:
+### Pointers Usage
 ```lua
-library.pointers["pointer_name"]:Set(value)
-library.pointers["pointer_name"]:Get()
+-- Set value
+library.pointers["pointer_name"]:Set(newValue)
+
+-- Get value
+local value = library.pointers["pointer_name"]:Get()
+
+-- Examples for different elements
+library.pointers["toggle_pointer"]:Set(true)
+library.pointers["slider_pointer"]:Set(75)
+library.pointers["dropdown_pointer"]:Set("Option 2")
+library.pointers["colorpicker_pointer"]:Set(Color3.fromRGB(255, 0, 0), 0)
+library.pointers["keybind_pointer"]:Set(Enum.KeyCode.R)
 ```
 
-### Themes
-Available theme colors:
-- accent
-- lightcontrast
-- darkcontrast
-- outline
-- inline
-- textcolor
-- textdark
-- textborder
-- cursoroutline
+### Configuration
+```lua
+-- Save configuration
+local config = window:GetConfig()
 
-### Window Features
-- Draggable
-- Minimizable
-- Customizable keybind
-- Auto-saves configuration
-- Smooth animations
+-- Load configuration
+window:LoadConfig(config)
+```
 
-### Additional Features
-- Watermark support
-- Keybinds list
-- Status indicators
-- Player list
-- Multi-page support
-- Responsive layout
-- Custom cursor
+### Custom Cursor
+```lua
+local cursor = window:Cursor({
+    thickness = 1.5,
+    color = Color3.fromRGB(255, 255, 255)
+})
+```
 
-### Event Connections
-The library supports these events:
-- began
-- ended
-- changed
+## Themes & Customization
 
-These can be used to create custom behaviors and interactions with UI elements.
+### Available Theme Colors
+```lua
+local theme = {
+    accent = Color3.fromRGB(55, 175, 225),
+    lightcontrast = Color3.fromRGB(30, 30, 30),
+    darkcontrast = Color3.fromRGB(20, 20, 20),
+    outline = Color3.fromRGB(0, 0, 0),
+    inline = Color3.fromRGB(50, 50, 50),
+    textcolor = Color3.fromRGB(255, 255, 255),
+    textdark = Color3.fromRGB(175, 175, 175),
+    textborder = Color3.fromRGB(0, 0, 0),
+    cursoroutline = Color3.fromRGB(10, 10, 10)
+}
+```
+
+## Examples
+
+### Complete UI Example
+```lua
+local library = loadstring(game:HttpGet("path/to/library.lua"))()
+
+-- Create window
+local window = library:New({
+    name = "Example UI",
+    size = Vector2.new(504, 604),
+    accent = Color3.fromRGB(55, 175, 225)
+})
+
+-- Add watermark
+window:Watermark({
+    name = "Example UI | FPS: %fps% | Ping: %ping%"
+})
+
+-- Create pages
+local mainPage = window:Page({
+    name = "Main"
+})
+
+local settingsPage = window:Page({
+    name = "Settings"
+})
+
+-- Create sections
+local mainSection = mainPage:Section({
+    name = "Features",
+    side = "left"
+})
+
+local settingsSection = settingsPage:Section({
+    name = "Configuration",
+    side = "right"
+})
+
+-- Add elements
+mainSection:Toggle({
+    name = "Example Toggle",
+    def = false,
+    pointer = "main_toggle",
+    callback = function(state)
+        print("Toggle:", state)
+    end
+})
+
+settingsSection:Slider({
+    name = "Example Slider",
+    def = 50,
+    min = 0,
+    max = 100,
+    pointer = "main_slider",
+    callback = function(value)
+        print("Value:", value)
+    end
+})
+
+-- Initialize
+window:Initialize()
+```
+
+This documentation should provide a comprehensive overview of all available features and their usage. Each element and feature is documented with practical examples and explanations of all available options.
