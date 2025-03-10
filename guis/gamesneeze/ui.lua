@@ -1904,9 +1904,6 @@ do
         end
         --
         library.began[#library.began + 1] = function(Input)
-            if Input.KeyCode == window.uibind then
-                window:Fade()
-            end
             --[[
             if Input.KeyCode == Enum.KeyCode.P then
                 local plrs = game:GetService("Players")
