@@ -13,7 +13,7 @@
 
 ### Installation
 ```lua
-local library = loadstring(game:HttpGet("path/to/library.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/guis/gamesneeze/ui.lua"))()
 ```
 
 ### Basic Structure
@@ -360,7 +360,7 @@ local theme = {
 
 ### Complete UI Example
 ```lua
-local library = loadstring(game:HttpGet("path/to/library.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/guis/gamesneeze/ui.lua"))()
 
 -- Create window
 local window = library:New({
