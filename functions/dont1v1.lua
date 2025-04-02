@@ -3,7 +3,8 @@
 local people = {
     ["normalgirIbysza"] = true,
     ["enpicism"] = true,
-    ["bleh0162"] = true
+    ["bleh0162"] = true,
+    ["Samspam214"] = true,
 }
 
 return people
