@@ -8,6 +8,7 @@ local people = {
 local lockers = {
     ["bleh0162"] = true,
     ["Samspam214"] = true,
+    ["carepirealt5"] = true,
 }
 
 return people, lockers
