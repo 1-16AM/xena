@@ -3,8 +3,11 @@
 local people = {
     ["normalgirIbysza"] = true,
     ["enpicism"] = true,
+}
+
+local lockers = {
     ["bleh0162"] = true,
     ["Samspam214"] = true,
 }
 
-return people
+return people, lockers
