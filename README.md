@@ -13,6 +13,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/head
 https://discord.gg/VSKCM7rXVY
 
 ## Developers & Credits
-[fzve](https://discord.com/users/1103469885415235665) - Developer
+[shaq](https://discord.com/users/154410158859091968) - Developer
 <br/>
-[7GrandDad](https://github.com/7GrandDadPGN) - Credits for a couple functions and ideas how to implement them, along with the formatting on this Github repo.
+[7GrandDad](https://github.com/7GrandDadPGN) - Credits for formatting on this Github repo.
