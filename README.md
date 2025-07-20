@@ -12,6 +12,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/head
 
 https://discord.gg/VSKCM7rXVY
 
+## Don't want to be included in our analytics? Run this
+
+```luau
+writefile("shaq16/optout", "")
+```
+
 ## Developers & Credits
 [shaq](https://discord.com/users/154410158859091968) - Developer
 <br/>
