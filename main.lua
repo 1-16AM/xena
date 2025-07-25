@@ -35,6 +35,7 @@ local function loadGame()
     local success, error = pcall(function()
         loadstring(game:HttpGet(scriptUrl))()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/functions/analytics.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/functions/AntiAFK.lua"))()
     end)
 
     if not success then
