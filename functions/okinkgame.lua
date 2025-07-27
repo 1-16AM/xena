@@ -1,4 +1,4 @@
-if not hookfunctionn then
+if not hookfunction then
 	local regui =
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/depthso/Dear-ReGui/refs/heads/main/ReGui.lua"))()
 
