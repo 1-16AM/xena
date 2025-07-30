@@ -31,7 +31,7 @@ if not hookfunction then
 	game.Players.LocalPlayer:Kick("Please change your executor; discord.gg/VSKCM7rXVY")
 end
 
-local anticheatok = game:GetService("ReplicatedStorage").Remotes.Miau
+local anticheatok = game:GetService("ReplicatedStorage").Remotes[""]
 local blockanticheat
 blockanticheat = hookfunction(anticheatok.FireServer, function(self, ...)
 	if self == anticheatok then
