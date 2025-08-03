@@ -1,4 +1,4 @@
--- https://discord.com/invite/99UuEwM9sX is their invite
+-- Note: This is not a crack rather we modify how requests are handled in order to properly run the lua code meant for Roblox Studio
 -- EVERY KEY WORKS
 local HttpService = game:GetService("HttpService")
 local bypass = loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/functions/hooking.lua"))()
@@ -13,4 +13,4 @@ bypass(nil, "POST", function(currentBody, request)
 end)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/hassanxzayn-lua/NEOXHUBMAIN/refs/heads/main/loader", true))()
--- CRACKED BY SHAQ
+-- MODIFIED BY SHAQ
