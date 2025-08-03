@@ -1,3 +1,4 @@
+-- Note: This is not a crack rather we modify how requests are handled in order to properly run the lua code meant for Roblox Studio
 local HttpService = game:GetService("HttpService")
 local bypass = loadstring(game:HttpGet("https://raw.githubusercontent.com/1-16AM/xena/refs/heads/main/functions/hooking.lua"))()
 
@@ -25,4 +26,4 @@ end) -- 8 bit rivals
 writefile("8bit.txt", "https://discord.gg/VSKCM7rXVY")
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/8bits4ya/rivals-v3/refs/heads/main/main.lua"))()
--- CRACKED BY SHAQ
+-- MODIFIED BY SHAQ
